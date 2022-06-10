@@ -20,6 +20,7 @@ func main() {
 	}
 }
 
+// helloHandler checks if path and method correct and writes hello to /hello path
 func helloHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/hello" {
 		http.Error(w, "404 not found", http.StatusNotFound)
@@ -32,6 +33,7 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "hello!")
 }
 
+// formHandler parses form.html if an error occures outputs error otherwise returns form values
 func formHandler(w http.ResponseWriter, r *http.Request) {
 	if err := r.ParseForm(); err != nil {
 		fmt.Fprintf(w, "ParseForm() err: %v\n", err)
