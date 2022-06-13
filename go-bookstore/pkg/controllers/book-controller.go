@@ -46,7 +46,7 @@ func CreateBook(w http.ResponseWriter, r *http.Request) {
 	b := CreateBook.CreateBook() // here we refer to our CreateBook receiver func inside models package
 
 	res, _ := json.Marshal(b)
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusCreated)
 	w.Write(res)
 }
 
