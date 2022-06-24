@@ -3,15 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/shomali11/slacker"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/shomali11/slacker"
 )
 
 func main() {
-	os.Setenv("SLACK_BOT_TOKEN", "xoxb-3712393710581-3700753206471-HLOg4nM7hEKaYsf7wVK5l3zm")
-	os.Setenv("SLACK_APP_TOKEN", "xapp-1-A03LUME2DP0-3708730999254-2c0848966abf985183f2f735c26d9477786c62da2960dbfd3d8fbe9acd85a33d")
+	os.Setenv("SLACK_BOT_TOKEN", "")
+	os.Setenv("SLACK_APP_TOKEN", "")
 
 	bot := slacker.NewClient(os.Getenv("SLACK_BOT_TOKEN"), os.Getenv("SLACK_APP_TOKEN"))
 
