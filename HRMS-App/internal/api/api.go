@@ -17,8 +17,8 @@ func GetDB(db *models.MongoInstance) {
 	mg = db
 }
 
-// GetEmployees returns all the employees
-func GetEmployees(c *fiber.Ctx) error {
+// ListEmployees returns all the employees
+func ListEmployees(c *fiber.Ctx) error {
 	var employees []models.Employee
 	query := bson.D{{}}
 
@@ -35,6 +35,36 @@ func GetEmployees(c *fiber.Ctx) error {
 	}
 
 	return c.Status(http.StatusOK).JSON(employees)
+}
+
+// GetEmployee returns the employee for given ID
+func GetEmployee(c *fiber.Ctx) error {
+	id := c.Params("id")
+	// first i get the id from URI and change it to hex
+	employeeID, err := primitive.ObjectIDFromHex(id)
+
+	if err != nil {
+		return c.Status(http.StatusBadRequest).SendString(err.Error())
+	}
+
+	// then i create a read query
+	filter := bson.D{{Key: "_id", Value: employeeID}}
+
+	rec := mg.DB.Collection("employees").FindOne(c.Context(), filter)
+
+	// if any error is occured during finding i check for error
+	if rec.Err() != nil {
+		if rec.Err() == mongo.ErrNoDocuments {
+			return c.Status(http.StatusNotFound).SendString(err.Error())
+		}
+		return c.Status(http.StatusInternalServerError).SendString(err.Error())
+	}
+
+	// then i decode the found record and return it
+	foundEmployee := &models.Employee{}
+	rec.Decode(foundEmployee)
+
+	return c.Status(http.StatusOK).JSON(foundEmployee)
 }
 
 // NewEmployee creates a new employee in DB
